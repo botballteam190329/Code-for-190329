@@ -40,9 +40,9 @@ Maybe pick up pom-poms on the way?
 #define CLAW_CLOSED 200
 
 #define LEFT_LIGHT_SENSOR_PORT 5
-#define LEFT_LIGHT_SENSOR_THRESH 2000 //200-3800
+#define LEFT_LIGHT_SENSOR_THRESH 3500 //200-3800
 #define RIGHT_LIGHT_SENSOR_PORT 4
-#define RIGHT_LIGHT_SENSOR_THRESH 2000 //200-3800
+#define RIGHT_LIGHT_SENSOR_THRESH 3500 //200-3800
 
 #define LIGHT_START_PORT 2
 
@@ -116,7 +116,7 @@ int main()
     //CONECTED FIRST POWELINE
     create_drive_direct(-100, -100);
     set_servo_position(ARM_SERVO_PORT, ARM_EXTENDED);
-    msleep(2000);
+    msleep(2200); //EDITED HEERE
     create_stop();
     create_drive_direct(0, 100);
     msleep(1500);
@@ -129,7 +129,7 @@ int main()
     line_square_up(-25);
     //GO TO SECOND LINE
     create_drive_direct(-100, -100);
-    msleep(2000);
+    msleep(2000); //EDITED HERE
     create_stop();
     set_servo_position(ARM_SERVO_PORT, ARM_DOWN);
     msleep(1000);
@@ -146,6 +146,7 @@ int main()
     msleep(1170);
     create_stop();
     //SECOND LINE CONNECTED
+    set_servo_position(ARM_SERVO_PORT, ARM_EXTENDED);
     create_drive_direct(0, 100);
     msleep(1500);
     create_stop();
@@ -155,12 +156,12 @@ int main()
     //DONE WITH BOTH POWERLINES
 
     //travel out to orange gas thingy closest to power lines
-    ////////////////////////////////////////////
-    create_drive_direct(100,-100);
+    //course correction
+    create_drive_direct(100, -100);
     msleep(1650);
-    create_drive_direct(50,50);
-    msleep(350);
-    create_drive_direct(-100,100);
+    create_drive_direct(50, 50);
+    msleep(200);
+    create_drive_direct(-100, 100);
     msleep(1650);
     ////////////////////////////////////////////
     create_drive_direct(200, 200);
@@ -169,36 +170,36 @@ int main()
     msleep(3300);
     set_servo_position(CLAW_ARM_SERVO_PORT, CLAW_ARM_EXTENDED);
     line_square_up(25);
-    create_drive_direct(-75,-75);
+    create_drive_direct(-75, -75);
     msleep(750);
-    create_drive_direct(-100,-100);
+    create_drive_direct(-100, -100);
     msleep(2000);
     set_servo_position(CLAW_ARM_SERVO_PORT, CLAW_ARM_EXTENDED_FURTHER);
-    create_drive_direct(50,50);
+    create_drive_direct(50, 50);
     msleep(500);
-    create_drive_direct(-50,-50);
+    create_drive_direct(-50, -50);
     msleep(500);
-    create_drive_direct(-25,-25);
+    create_drive_direct(-25, -25);
     slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_EXTENDED_FURTHER, CLAW_ARM_UP);
     create_stop();
-    create_drive_direct(100,100);
+    create_drive_direct(100, 100);
     msleep(1600);
     line_square_up(25);
-    create_drive_direct(100,100);
+    create_drive_direct(100, 100);
     msleep(4500);
-    create_drive_direct(100,-100);
+    create_drive_direct(100, -100);
     msleep(1650);
-    create_drive_direct(100,100);
+    create_drive_direct(100, 100);
     msleep(4000);
     line_square_up(25);
-    create_drive_direct(-15,-140);
+    create_drive_direct(-20, -165);
     msleep(1200);
     create_stop();
-printf("Begining Final");
-    slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP,742);
-printf("End");
-
-
+    printf("Begining Final");
+    slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP, 742);
+    printf("End");
+    create_drive_direct(50, 50);
+    msleep(200);
 
     //END
     create_stop();
@@ -285,13 +286,13 @@ void slow_servo(int servoPort, int currentPosition, int finishPosition)
 {
     set_servo_position(servoPort, currentPosition);
     msleep(200);
-    while(currentPosition != finishPosition)
+    while (currentPosition != finishPosition)
     {
-        if(currentPosition < finishPosition)
+        if (currentPosition < finishPosition)
         {
             currentPosition += 1;
         }
-        if(currentPosition > finishPosition)
+        if (currentPosition > finishPosition)
         {
             currentPosition -= 1;
         }
