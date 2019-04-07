@@ -40,9 +40,9 @@ Maybe pick up pom-poms on the way?
 #define CLAW_CLOSED 200
 
 #define LEFT_LIGHT_SENSOR_PORT 5
-#define LEFT_LIGHT_SENSOR_THRESH 3500 //200-3800
+#define LEFT_LIGHT_SENSOR_THRESH 3000 //200-3800
 #define RIGHT_LIGHT_SENSOR_PORT 4
-#define RIGHT_LIGHT_SENSOR_THRESH 3500 //200-3800
+#define RIGHT_LIGHT_SENSOR_THRESH 3000 //200-3800
 
 #define LIGHT_START_PORT 2
 
@@ -61,9 +61,10 @@ int main()
     printf("START\n");
     arm_all();
     msleep(1000);
-    //wait_for_light(LIGHT_START_PORT); //put wait-for-light crap here
+   	wait_for_light(LIGHT_START_PORT); //put wait-for-light crap here
+    shut_down_in(119);
 
-    //start with the arm down, then extend it
+    //start with the arm down, then extend it HERE
     set_servo_position(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP);
     msleep(500);
     set_servo_position(ARM_SERVO_PORT, ARM_RETRACTED);
@@ -157,12 +158,12 @@ int main()
 
     //travel out to orange gas thingy closest to power lines
     //course correction
-    create_drive_direct(100, -100);
+ /*   create_drive_direct(100, -100);
     msleep(1650);
     create_drive_direct(50, 50);
     msleep(200);
     create_drive_direct(-100, 100);
-    msleep(1650);
+    msleep(1650)*/
     ////////////////////////////////////////////
     create_drive_direct(200, 200);
     msleep(1300);
@@ -192,15 +193,20 @@ int main()
     create_drive_direct(100, 100);
     msleep(4000);
     line_square_up(25);
-    create_drive_direct(-20, -165);
+    create_drive_direct(-40, -165);
     msleep(1200);
     create_stop();
     printf("Begining Final");
     slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP, 742);
-    printf("End");
+    create_drive_direct(0,-25);
+    msleep(750);
     create_drive_direct(50, 50);
-    msleep(200);
-
+    msleep(800);
+    create_stop();
+    slow_servo(CLAW_ARM_SERVO_PORT, 742, CLAW_ARM_UP);
+    msleep(1000);
+    slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP, 742);
+    printf("End");
     //END
     create_stop();
     create_disconnect();
