@@ -22,16 +22,17 @@ Maybe pick up pom-poms on the way?
 
 #include <kipr/botball.h>
 
-#define ARM_SERVO_PORT 0
+#define ARM_SERVO_PORT 0   
 #define ARM_RETRACTED 0
 #define ARM_EXTENDED 1425
 #define ARM_EXTENDED_HIGHER 1400
 #define ARM_DOWN 2047
+#define ARM_START 1814
 
 #define CLAW_ARM_SERVO_PORT 3
 #define CLAW_ARM_RETRACTED 1900
 #define CLAW_ARM_UP 1300
-#define CLAW_ARM_EXTENDED 225
+#define CLAW_ARM_EXTENDED 207
 #define CLAW_ARM_EXTENDED_FURTHER 0
 
 #define CLAW_SERVO_PORT 2
@@ -40,9 +41,9 @@ Maybe pick up pom-poms on the way?
 #define CLAW_CLOSED 200
 
 #define LEFT_LIGHT_SENSOR_PORT 5
-#define LEFT_LIGHT_SENSOR_THRESH 3000 //200-3800
+#define LEFT_LIGHT_SENSOR_THRESH 1200 //200-3800
 #define RIGHT_LIGHT_SENSOR_PORT 4
-#define RIGHT_LIGHT_SENSOR_THRESH 3000 //200-3800
+#define RIGHT_LIGHT_SENSOR_THRESH 1200 //200-3800
 
 #define LIGHT_START_PORT 2
 
@@ -63,6 +64,7 @@ int main()
     msleep(1000);
    	wait_for_light(LIGHT_START_PORT); //put wait-for-light crap here
     shut_down_in(119);
+    //msleep(5000);
 
     //start with the arm down, then extend it HERE
     set_servo_position(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP);
@@ -87,8 +89,11 @@ int main()
     msleep(1000);
     line_square_up(25);
     msleep(500);
+    ////BIG ARC ADDITION
+    create_drive_direct(50,50);
+    msleep(300);
 
-    //from homebase to powerlines
+    //from homebase to powerlines (BIG ARC)
     create_drive_direct(170, 200);
     msleep(3150);
     create_drive_direct(-85, 100);
@@ -117,7 +122,7 @@ int main()
     //CONECTED FIRST POWELINE
     create_drive_direct(-100, -100);
     set_servo_position(ARM_SERVO_PORT, ARM_EXTENDED);
-    msleep(2200); //EDITED HEERE
+    msleep(2500); //EDITED HEERE
     create_stop();
     create_drive_direct(0, 100);
     msleep(1500);
@@ -158,12 +163,12 @@ int main()
 
     //travel out to orange gas thingy closest to power lines
     //course correction
- /*   create_drive_direct(100, -100);
+ 	create_drive_direct(100, -100);
     msleep(1650);
     create_drive_direct(50, 50);
     msleep(200);
     create_drive_direct(-100, 100);
-    msleep(1650)*/
+    msleep(1650);
     ////////////////////////////////////////////
     create_drive_direct(200, 200);
     msleep(1300);
@@ -174,39 +179,47 @@ int main()
     create_drive_direct(-75, -75);
     msleep(750);
     create_drive_direct(-100, -100);
-    msleep(2000);
-    set_servo_position(CLAW_ARM_SERVO_PORT, CLAW_ARM_EXTENDED_FURTHER);
+    msleep(1500);
+    set_servo_position(CLAW_ARM_SERVO_PORT, CLAW_ARM_EXTENDED);
     create_drive_direct(50, 50);
     msleep(500);
     create_drive_direct(-50, -50);
     msleep(500);
-    create_drive_direct(-25, -25);
-    slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_EXTENDED_FURTHER, CLAW_ARM_UP);
+    create_stop();
+    //MODIFIED 4-8-19
+    //create_drive_direct(-25, -25);
+    slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_EXTENDED, CLAW_ARM_UP);
     create_stop();
     create_drive_direct(100, 100);
-    msleep(1600);
+    msleep(1000);
     line_square_up(25);
     create_drive_direct(100, 100);
     msleep(4500);
     create_drive_direct(100, -100);
     msleep(1650);
     create_drive_direct(100, 100);
-    msleep(4000);
+    msleep(3800);
     line_square_up(25);
-    create_drive_direct(-40, -165);
+    
+    //////////????REEEE
+    //create_drive_direct(-50,-100);
+    //msleep(250);
+    
+    create_drive_direct(-35, -165);
     msleep(1200);
     create_stop();
-    printf("Begining Final");
+    printf("Begining Final\n");
     slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP, 742);
-    create_drive_direct(0,-25);
-    msleep(750);
+    //create_drive_direct(0,-25);
+    //msleep(750);
     create_drive_direct(50, 50);
-    msleep(800);
+    msleep(400);
+    
     create_stop();
     slow_servo(CLAW_ARM_SERVO_PORT, 742, CLAW_ARM_UP);
-    msleep(1000);
+    msleep(250);
     slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP, 742);
-    printf("End");
+    printf("End\n");
     //END
     create_stop();
     create_disconnect();
@@ -222,7 +235,7 @@ void arm_all()
     set_servo_position(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP);
     set_servo_position(CLAW_SERVO_PORT, CLAW_OPEN_WIDE);
     msleep(500);
-    set_servo_position(ARM_SERVO_PORT, ARM_DOWN);
+    set_servo_position(ARM_SERVO_PORT, ARM_START);
     msleep(500);
     set_servo_position(CLAW_ARM_SERVO_PORT, CLAW_ARM_RETRACTED);
     //cg();
