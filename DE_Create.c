@@ -34,6 +34,7 @@ Maybe pick up pom-poms on the way?
 #define CLAW_ARM_UP 1300
 #define CLAW_ARM_EXTENDED 207
 #define CLAW_ARM_EXTENDED_FURTHER 0
+#define CLAW_ARM_FINISH 741
 
 #define CLAW_SERVO_PORT 2
 #define CLAW_OPEN 900
@@ -41,9 +42,9 @@ Maybe pick up pom-poms on the way?
 #define CLAW_CLOSED 200
 
 #define LEFT_LIGHT_SENSOR_PORT 5
-#define LEFT_LIGHT_SENSOR_THRESH 1200 //200-3800
+#define LEFT_LIGHT_SENSOR_THRESH 3000 //200-3800
 #define RIGHT_LIGHT_SENSOR_PORT 4
-#define RIGHT_LIGHT_SENSOR_THRESH 1200 //200-3800
+#define RIGHT_LIGHT_SENSOR_THRESH 3000 //200-3800
 
 #define LIGHT_START_PORT 2
 
@@ -204,23 +205,31 @@ int main()
     //////////????REEEE
     //create_drive_direct(-50,-100);
     //msleep(250);
-    
+    //THIS IS THE THING TO ADJUST AT THE TOURNAMENT FOR PLACING THE GAS VALVE TO BREAK VOLUME
     create_drive_direct(-35, -165);
     msleep(1200);
     create_stop();
     printf("Begining Final\n");
-    slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP, 742);
+    slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP, CLAW_ARM_FINISH);
     //create_drive_direct(0,-25);
     //msleep(750);
     create_drive_direct(50, 50);
-    msleep(400);
+    msleep(600);
     
     create_stop();
-    slow_servo(CLAW_ARM_SERVO_PORT, 742, CLAW_ARM_UP);
+    slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_FINISH, CLAW_ARM_UP);
     msleep(250);
-    slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP, 742);
-    printf("End\n");
+    slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP, CLAW_ARM_FINISH);
+    create_drive_direct(-25,0);
+    msleep(500);
+    create_stop();
+    slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_FINISH, CLAW_ARM_UP);
+    msleep(250);
+    slow_servo(CLAW_ARM_SERVO_PORT, CLAW_ARM_UP, CLAW_ARM_FINISH);
+    msleep(250);
+
     //END
+    printf("End\n");
     create_stop();
     create_disconnect();
     disable_servos();
@@ -316,6 +325,6 @@ void slow_servo(int servoPort, int currentPosition, int finishPosition)
             currentPosition -= 1;
         }
         set_servo_position(servoPort, currentPosition);
-        msleep(2);
+        msleep(1);
     }
 }
